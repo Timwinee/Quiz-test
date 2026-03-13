@@ -1,4 +1,4 @@
-const question =  {
+export  const question =  {
   "questions": [
     {
       "question": "Qaysi JavaScript freymvork eng mashhur hisoblanadi?",
