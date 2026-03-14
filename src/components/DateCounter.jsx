@@ -1,35 +1,47 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 
+const initialState = {
+    count:0,
+    step:1,
+}
+
+function reducer(state, action){
+    console.log(state, action)
+    return state + action
+}
+
+const date = new Date()
 function DateCounter() {
-  const [count, setCount] = useState(0);
-  const [step, setStep] = useState(1);
 
-  // This mutates the date object.
-  const date = new Date('june 21 2027');
-  date.setDate(date.getDate() + count);
+    const [state, dispatch] = useReducer(reducer, initialState)
+    
+
+//   const [count, setCount] = useState(0);
+//   const [step, setStep] = useState(1);
+    const {count, step} = state
+
+  const currentDate = new Date(date)
+  currentDate.setDate(date.getDate() + count)
 
   const dec = function () {
-    // setCount((count) => count - 1);
-    setCount(count => count - step);
+    dispatch({type:"decrement"})
   };
 
   const inc = function () {
-    // setCount((count) => count + 1);
-    setCount(count => count + step);
+    dispatch({type:"increment"})
   };
 
   const defineCount = function (e) {
-    setCount(Number(e.target.value));
+    dispatch({type:"setcount", payload:Number(e.target.value)})
   };
 
   const defineStep = function (e) {
-    setStep(Number(e.target.value));
+    dispatch({type:"setStep", payload:Number(e.target.value)});
   };
 
   const reset = function () {
-    setCount(0);
-    setStep(1);
-  };
+    dispatch({type:"reset"})
+  }
 
   return (
     <div className="counter">
@@ -46,11 +58,11 @@ function DateCounter() {
 
       <div>
         <button onClick={dec}>-</button>
-        <input value={count} onChange={defineCount} />
+        <input value={count} onChange={defineCount} className='outline-2 text-center' />
         <button onClick={inc}>+</button>
       </div>
 
-      <p>{date.toDateString()}</p>
+      <p>{currentDate.toDateString()}</p>
 
       <div>
         <button onClick={reset}>Reset</button>
